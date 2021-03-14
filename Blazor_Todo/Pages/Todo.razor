@@ -1,0 +1,102 @@
+﻿@page "/"
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 mt-5">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <input type="text" @bind="NewToDo" placeholder="Hit it.." id="txtinput" class="form-control" style="width:1100px;"/>
+                            <button class="btn btn-outline-info  form-control ml-10" style="width:150px;" @onclick="AddToList">Okay</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+            @if (toDoList.Count > 0)
+            {
+                <div class="card">
+                    <div class="card-header">Your Todo List</div>
+                    <div class="card-body">
+                        <table class="table table-responsive-md table-striped">
+                            <thead>
+                                <tr>
+                                    <th> Task Name </th>
+                                    <th> Status </th>
+                                    <th> Action </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var todo in toDoList)
+                                {
+                                    if (todo.Status)
+                                    {
+
+                                        <tr>
+                                            <td>  @todo.taskName   </td>
+                                            <td>  <span class="badge badge-success"> Done </span></td>
+                                            <td>  <input type="checkbox" @bind="todo.Status" /> </td>
+
+
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>  @todo.taskName   </td>
+                                            <td>  <span class="badge badge-danger"> Pending</span></td>
+                                            <td>  <input type="checkbox" @bind="todo.Status" data-toggle="tooltip" title="Click to Change Status" /> </td>
+
+
+                                        </tr>
+                                    }
+
+                                }
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    @code {
+        public class Todoclass
+        {
+            public string taskName { get; set; }
+            public bool Status { get; set; } = false;
+        }
+
+        List<Todoclass> toDoList = new List<Todoclass>();
+        string NewToDo = ""; bool status = false;
+        private void AddToList()
+        {
+            if (!string.IsNullOrWhiteSpace(NewToDo))
+            {
+                toDoList.Add(new Todoclass { taskName = this.NewToDo, Status = this.status }
+           );
+                NewToDo = string.Empty;
+
+
+            }
+        }
+        private void changeStatus()
+        {
+
+            if (this.status)
+            {
+                status = false;
+            }
+            else
+            {
+                status = true;
+            }
+        }
+
+
+    }
